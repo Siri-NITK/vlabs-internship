@@ -18,7 +18,34 @@
    interface as http request.
 * SDLC 
 
+** Requirement Determination and Analysis
+     Identify the requirements, users and their roles.
+     +make use case diagrams
+     +The actors can be user and admin
+** Identify the roles and activities from the use case diagrams
+** Design model
+*** Sets
+      A set is collection of things with similar property.
+      Relation- r:A>B is a relation. A connection from element from one set to another set.
+      Function0- r:A>B! is a function. Every function is a relation. In a function every element from A set has a unique image.
+      
+      Regular Expressions
+      B!- exactly 1
+      B? - atmost one
+      B* -atleast 0
+      B+ atleast one
+      
+      - [email,user]:user?>Email 
+	Every user has one email id and every email id is associated with atmost one user.
+      - [name,user]:user>name!
+	Every user has exactly one name
+      - [role,user]: user>role!
+     
   -[[http://python.org][python]] ::A pytho web page    
   -[[http://flask.pocoo.org/][flask]] :: Its a microframework for python
 
   -[[/home/home/Downloads/IMG_20160517_092640205.jpg][Imageofwebapplication]]
+
+*
+
+
