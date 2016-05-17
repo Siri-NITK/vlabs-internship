@@ -1,0 +1,19 @@
+#+TITLE:Building a Web Application:  Ground up to the cloud
+#+Author: Srivalya Elluru
+#+DATE: [2016-05-17]
+
+* Overview
+** what is a WebApplication
+ It is client-server application which is stored on remote server.
+ There are interfaces such as user interface,web interface etc.
+ 
+  
+* Introduction
+** The components of of Web Application
+   +Client Side
+   +Server Side
+   +Database 
+   +Data Model
+   The client send a request to the web server through the browser
+   interface as http request.
+* SDLC  
