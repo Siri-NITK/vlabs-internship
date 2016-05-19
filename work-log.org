@@ -17,7 +17,16 @@
      ++ Learnt how to 
      +++ Export org file as html to the browser
      +++ How to make the a word as link
-     
+ ** [2016-05-17 wed]
+    + What is the task I was assigned today?
+      + To build the object model
+    + What did I get from completing the task?
+      +Completed the user,email and role classes and their testcases.
+ **  [2016-05-17 thu]
+    + What is the task I was assigned today?
+      + To build the object model
+    + What did I get from completing the task?
+      +Completed the session class and few extra operations and their testcases.
 
 ** Weekly  Summary
    + What are the insights gained?
