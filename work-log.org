@@ -22,14 +22,22 @@
       + To build the object model
     + What did I get from completing the task?
       +Completed the user,email and role classes and their testcases.
-**  [2016-05-19 thu]
+** [2016-05-19 thu]
     + What is the task I was assigned today?
       + To build the object model
     + What did I get from completing the task?
       +Completed the session class and few extra operations and their testcases.
-
+** [2016-05-20 fri]
+   + What is the task I was assigned today?
+     + To build the object model and testcases 
+   + What did I get from completing the task?
+     + Moved the add_user,delete_user,update_role to a new class called system.
+       This class has list if users and sessions.
+       what I learnt today is that only the methods which can modify the
+       attributes should belong to that class.
+  
 ** Weekly  Summary
    + What are the insights gained?
    + What is my footprint in the realization of the project?
 * Month of June
-* Month of July
+* Month of Julys
