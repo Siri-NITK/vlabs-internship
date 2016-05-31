@@ -32,12 +32,44 @@
      + To build the object model and testcases 
    + What did I get from completing the task?
      + Moved the add_user,delete_user,update_role to a new class called system.
-       This class has list if users and sessions.
+       This class has list of users and sessions.
        what I learnt today is that only the methods which can modify the
        attributes should belong to that class.
   
 ** Weekly  Summary
    + What are the insights gained?
+      + learnt how to build an Object Model in according to a Data model
    + What is my footprint in the realization of the project?
+      + Can build the object-model section of an application
+      
+** [2016-05-23 Mon]
+   + What is the task I was assigned today?
+     An intro to how database works was given. We were asked to build the persistence layer for the object model.
+   + What did I get done against each task?
+     Downloaded the boiler-plate code and started working on the methods and the test-cases of the persistence layer.
+     
+** [2016-05-24 Tue]
+   + what is the task I was assigned today?
+     + To complete the ORM 
+   + What did I get done against each task?
+     + Completed modifying the methods and wrote a few the testcases for ORM. 
+     
+** [2016-05-25 wed]
+    + What is the task I was assigned today?
+      + To complete the ORM 
+    + What did I get from completing the task?
+      + Finished writing all the testcases for the ORM 
+      
+** [2016-05-26 thu]
+    + What is the task I was assigned today?
+      + To build the REST API for the given web application, by referring to the functionality of the ORM.
+    + What did I get from completing the task?
+      + A boiler-plate code was given and added the required functionality.
+      
+** [2016-05-27 fri]
+   + What is the task I was assigned today?
+      + Update the REST API and implemented all the System class methods in the API.
+   + What did I get from completing the task?
+      
 * Month of June
 * Month of Julys
