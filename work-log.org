@@ -38,6 +38,12 @@
   
 ** Weekly  Summary
    + What are the insights gained?
+     
+     I have learnt how to build an Object Model and link the database to that model.
+
    + What is my footprint in the realization of the project?
+** [2016-05-23 Mon]
+  
+     
 * Month of June
 * Month of Julys
