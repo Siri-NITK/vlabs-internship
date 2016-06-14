@@ -38,18 +38,10 @@
   
 ** Weekly  Summary
    + What are the insights gained?
-<<<<<<< HEAD
-     
      I have learnt how to build an Object Model and link the database to that model.
 
    + What is my footprint in the realization of the project?
-** [2016-05-23 Mon]
-  
-     
-=======
-      + learnt how to build an Object Model in according to a Data model
-   + What is my footprint in the realization of the project?
-      + Can build the object-model section of an application
+
       
 ** [2016-05-23 Mon]
    + What is the task I was assigned today?
@@ -79,7 +71,37 @@
    + What is the task I was assigned today?
       + Update the REST API and implemented all the System class methods in the API.
    + What did I get from completing the task?
-      
->>>>>>> e4219bdb22fbd72e52665cfae152878a8ba4dd10
+
+** [2016-05-30 Mon]
+   + Task assigned today: To start working on the front end.
+   +  What did I get done against each task? Implemented login and logout in the rest API.
+** [2016-05-31 Tue]
+   + Task assigned today: To write the test cases for login and logout restAPI. Started working with view list of users.   
+   + what did I get done against each task? Got the test cases working.  
 * Month of June
-* Month of Julys
+
+** [2016-06-1 Wed]
+   + Task assigned today: Fixed the error in viewing the of users and started working with add, delete and edit user. 
+   + What did I get done against each task? Done with add, delete and edit user.
+
+** [2016-06-2 Thu]
+   + Task assigned today: We had to do manual deployment and automatic deployment of our web application.
+   + What did I get done against each task? We deployed the web application deployed on an external host, using both a manual deployment and an ADS.
+** [2016-06-3 Fri]
+   + Task assigned today? To give a small presentation on the completed web application made during the boot camp,and present the documentation.
+   + What did I get done against the task? Presented the documentation on the completed web application, and demonstrated the working of the application, along with displaying the running test cases.
+
+** [2016-06-6 Mon]
+   + Task assigned today? To understand the PDF forwarded by mentor about big data, why is it necessary and importance to have security policies for huge data. 
+
+** [2016-06-7 Tue]
+   + Task assigned today? Spoke to my mentor, he explained me a senario where certain resources which agents can access, there are restriction policies as how they can utilize the resouces for different types agents so that the data is secured.   
+      He asked me to write a specification language for this senario.
+** [2016-06-8 Wed]
+   + Task assigned today? Still working on the specification language as he asked me to modify the previous one I had sent.
+** [2016-06-09 Thu]
+   + Task assigned today? Still modifying the specification language.
+** [2016-06-9 Fri]
+   + Task assigned today? Couldn't communicate with my mentor as he was busy with some other work today. I didnt have much to do today.
+   
+* Month of July
