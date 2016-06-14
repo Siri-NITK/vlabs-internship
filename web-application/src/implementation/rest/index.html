@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-06-03 Fri 09:28 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Application Server</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="VLEAD" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">The Application Server</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline5">1. Mapping</a>
+<ul>
+<li><a href="#orgheadline1">1.1. Get methods</a></li>
+<li><a href="#orgheadline2">1.2. Post methods</a></li>
+<li><a href="#orgheadline3">1.3. Put methods</a></li>
+<li><a href="#orgheadline4">1.4. Delete methods</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline24">2. REST</a>
+<ul>
+<li><a href="#orgheadline6">2.1. Initialization</a></li>
+<li><a href="#orgheadline7">2.2. index</a></li>
+<li><a href="#orgheadline8">2.3. login</a></li>
+<li><a href="#orgheadline9">2.4. logout</a></li>
+<li><a href="#orgheadline10">2.5. GET all users</a></li>
+<li><a href="#orgheadline11">2.6. GET all roles</a></li>
+<li><a href="#orgheadline12">2.7. GET all names</a></li>
+<li><a href="#orgheadline13">2.8. GET all emails</a></li>
+<li><a href="#orgheadline14">2.9. GET a user with id</a></li>
+<li><a href="#orgheadline15">2.10. GET a role with id</a></li>
+<li><a href="#orgheadline16">2.11. GET a name with id</a></li>
+<li><a href="#orgheadline17">2.12. GET an email with id</a></li>
+<li><a href="#orgheadline18">2.13. Create a user</a></li>
+<li><a href="#orgheadline19">2.14. Delete a user</a></li>
+<li><a href="#orgheadline20">2.15. Update the role of a user</a></li>
+<li><a href="#orgheadline21">2.16. Update the name of a user</a></li>
+<li><a href="#orgheadline22">2.17. Update the email of a user</a></li>
+<li><a href="#orgheadline23">2.18. Update user</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline28">3. Test API</a>
+<ul>
+<li><a href="#orgheadline25">3.1. Imports for tests</a></li>
+<li><a href="#orgheadline26">3.2. User Tests</a></li>
+<li><a href="#orgheadline27">3.3. Run Tests</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">1</span> Mapping</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> Get methods</h3>
+<div class="outline-text-3" id="text-1-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">URL</th>
+<th scope="col" class="org-left">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">/users</td>
+<td class="org-left">get_users</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/roles</td>
+<td class="org-left">get_roles</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/names</td>
+<td class="org-left">get_names</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/emails</td>
+<td class="org-left">get_emails</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/user/&lt;id&gt;</td>
+<td class="org-left">get_user_by_id</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/role/&lt;id&gt;</td>
+<td class="org-left">get_role_by_id</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/email/&lt;id&gt;</td>
+<td class="org-left">get_email_by_id</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/name/&lt;id&gt;</td>
+<td class="org-left">get_name_by_id</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Post methods</h3>
+<div class="outline-text-3" id="text-1-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">URL</th>
+<th scope="col" class="org-left">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">/create_user</td>
+<td class="org-left">create_user</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Put methods</h3>
+<div class="outline-text-3" id="text-1-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">URL</th>
+<th scope="col" class="org-left">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">/user_roles/&lt;id&gt;</td>
+<td class="org-left">update_role(int id)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/user_names/&lt;id&gt;</td>
+<td class="org-left">update_name(int id)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">/user_emails/&lt;id&gt;</td>
+<td class="org-left">update_email(int id)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> Delete methods</h3>
+<div class="outline-text-3" id="text-1-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">URL</th>
+<th scope="col" class="org-left">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">/users/&lt;id&gt;</td>
+<td class="org-left">delete_user(int id)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline24" class="outline-2">
+<h2 id="orgheadline24"><span class="section-number-2">2</span> REST</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">2.1</span> Initialization</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-python"># -*- coding: utf-8 -*-
+
+import os
+import csv
+import requests
+from datetime import datetime
+import inspect
+from flask import session, render_template, Blueprint, request, jsonify, abort,\
+    current_app, redirect, url_for
+from config import *
+from flask import current_app
+
+from flask import Flask, redirect, url_for
+from werkzeug import secure_filename
+from db import *
+from utils import parse_request, jsonify_list
+api = Blueprint('APIs', __name__)
+system = WebSystem()
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">2.2</span> index</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route("/", methods=['GET'])
+def index():
+    global system
+    if request.method == 'GET':
+        if ('email' in session):
+            return render_template("user-list.html")
+        else:
+            return render_template("login.html")
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">2.3</span> login</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route("/auth/login", methods=['POST'])
+def login():
+    global system
+    try:
+        email = str(request.form['email'])
+        usr = system.get_user_from_email(email)
+        system.login(usr)
+        current_app.logger.info("Successfully Logged in")
+        #session['role_name'] = str(user_list[usr]['role']['name'])
+        session['email'] = email
+        session['role_name'] = usr.role.value
+        return redirect("/")
+    except Exception, e:
+        return render_template("login.html", message = str(e))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">2.4</span> logout</h3>
+<div class="outline-text-3" id="text-2-4">
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/auth/logout', methods=['GET'])
+def logout_handler():
+    global system
+    system.logout(system.get_session_from_email(session['email']))
+    session.pop('email', None)
+    session.pop('role_name', None)
+    return redirect("/")
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">2.5</span> GET all users</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users', methods=['GET'])
+def get_users():
+    global system
+    #print request.json
+    session_email = request.headers.get('session')
+    if session_email == None:
+        abort(400)
+    try:
+        session = system.get_session_from_email(session_email)
+        users = system.get_users(session)
+        print jsonify_list([i.to_client() for i in users])
+        return jsonify_list([i.to_client() for i in users])
+        
+    except Exception, e:
+        current_app.logger.error("Error occured while getting users"
+                                     "user record: %s" % str(e))
+        print str(e)                                     
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">2.6</span> GET all roles</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+   The is the REST API to get all the roles.
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/roles', methods=['GET'])
+def get_roles():
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        roles = system.get_roles(session)
+        return jsonify_list([i.to_client() for i in roles])
+    except Exception, e:
+        current_app.logger.error("Error occured while getting roles"
+                                     "user record: %s" % str(e))
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">2.7</span> GET all names</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+   The is the REST API to get all the names.
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/names', methods=['GET'])
+def get_names():
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        names = system.get_names(session)
+        return jsonify_list([i.to_client() for i in names])
+    except Exception, e:
+        current_app.logger.error("Error occured while getting names"
+                                     "user record: %s" % str(e))
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">2.8</span> GET all emails</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+   The is the REST API to get all the roles.
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/emails', methods=['GET'])
+def get_emails():
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        emails = system.get_emails(session)
+        return jsonify_list([i.to_client() for i in emails])
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">2.9</span> GET a user with id</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users/&lt;int:id&gt;', methods=['GET'])
+def get_user_by_id(id):
+    global system
+    session_email = request.headers.get('session')
+    if not session_email:
+        abort(400)
+    try:
+        session = system.get_session_from_email(session_email)
+        user = system.get_user_by_id(session,id)
+        return jsonify(user.to_client())
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        print str(e)
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">2.10</span> GET a role with id</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/roles/&lt;int:id&gt;', methods=['GET'])
+def get_role_by_id(id):
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        role = system.get_role_by_id(session,id)
+        return jsonify(role.to_client())
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        print str(e)
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">2.11</span> GET a name with id</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/names/&lt;int:id&gt;', methods=['GET'])
+def get_name_by_id(id): 
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        name = system.get_name_by_id(session,id)
+        return jsonify(name.to_client())
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        print str(e)
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">2.12</span> GET an email with id</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/emails/&lt;int:id&gt;', methods=['GET'])
+def get_email_by_id(id):
+    global system
+    if not request.json or not 'session' in request.json:
+        abort(400)
+    try:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        email = system.get_email_by_id(session,id)
+        return jsonify(email.to_client())
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        print str(e)
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18"><span class="section-number-3">2.13</span> Create a user</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+Usage:
+</p>
+<pre class="example">
+POST request
+{
+"name": "Jimi hendrix",
+"email": "jimi@gmail.com",
+"role_id": 1
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/create_user', methods=['POST'])
+def create_user():
+    global system
+    print request.json
+    if not request.json or not 'name' in request.json or not 'email' in request.json or not 'role_id' in request.json or not 'session' in request.json :
+        abort(400)
+    else:
+        name = request.json['name'].encode('ascii','ignore')
+        email = request.json['email'].encode('ascii','ignore')
+        role_id = request.json['role_id']
+        session_email = request.json['session'].encode('ascii','ignore')
+        try:
+            role = Role.get_by_id(role_id)
+            session = system.get_session_from_email(session_email)
+            system.create_user(session,name,email,role)
+            return jsonify(status = 'sucess') 
+            
+            #return jsonify(id= id,status = 'sucess')
+        except Exception, e:
+            current_app.logger.error("Error occured while inserting"
+                                     "user record: %s" % str(e))
+            abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19"><span class="section-number-3">2.14</span> Delete a user</h3>
+<div class="outline-text-3" id="text-2-14">
+<p>
+Usage:
+</p>
+<pre class="example">
+POST request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users/&lt;int:id&gt;', methods=['DELETE'])
+def delete_user(id):
+    global system
+    session_email = request.headers.get('session')
+    if session_email == None:
+        abort(400)
+    else:
+        try:
+            session = system.get_session_from_email(session_email)
+            user = User.get_by_id(id)
+            system.delete_user(session,user)
+            return jsonify(id= id,status = 'sucess') 
+        except Exception, e:
+            current_app.logger.error("Error occured while inserting"
+                                     "user record: %s" % str(e))
+            abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">2.15</span> Update the role of a user</h3>
+<div class="outline-text-3" id="text-2-15">
+<p>
+Usage:
+</p>
+<pre class="example">
+POST request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users_roles/&lt;int:id&gt;', methods=['PUT'])
+def update_role(id):
+    global system
+    if not request.json or not 'session' in request.json :
+        abort(400)
+    else:
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        try:
+            
+            user = User.get_by_id(id)
+            user1 = system.update_role(session,user)
+            return jsonify(user1.to_client())
+        except Exception, e:
+            current_app.logger.error("Error occured while updating"
+                                     "user record: %s" % str(e))
+            abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21"><span class="section-number-3">2.16</span> Update the name of a user</h3>
+<div class="outline-text-3" id="text-2-16">
+<p>
+Usage:
+</p>
+<pre class="example">
+POST request
+{
+"session": "admin@vlabs.com"
+"name": "Mike Shinoda"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users_names/&lt;int:id&gt;', methods=['PUT'])
+def update_name(id):
+    global system
+    if not request.json or not 'session' in request.json or not 'name' in request.json:
+        abort(400)
+    else:
+        user = User.get_by_id(id)
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        name = request.json['name'].encode('ascii','ignore')
+        try:
+            user1 = system.update_name(session,user,name)
+            return jsonify(user1.to_client())
+        except Exception, e:
+            current_app.logger.error("Error occured while updating"
+                                     "user record: %s" % str(e))
+            abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22"><span class="section-number-3">2.17</span> Update the email of a user</h3>
+<div class="outline-text-3" id="text-2-17">
+<p>
+Usage:
+</p>
+<pre class="example">
+POST request
+{
+"session": "admin@vlabs.com"
+"email": "shashank@gmail.com"
+}
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/users_emails/&lt;int:id&gt;', methods=['PUT'])
+def update_email(id):
+    global system
+    if not request.json or not 'session' in request.json or not 'email' in request.json:
+        abort(400)
+    else:
+        user = User.get_by_id(id)
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        email = request.json['email'].encode('ascii','ignore')
+        try:
+            user1 = system.update_email(session,user,email)
+            return jsonify(user1.to_client())
+        except Exception, e:
+            current_app.logger.error("Error occured while updating"
+                                     "user record: %s" % str(e))
+            abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23"><span class="section-number-3">2.18</span> Update user</h3>
+<div class="outline-text-3" id="text-2-18">
+<p>
+Usage:
+</p>
+<pre class="example">
+GET request
+{
+"session": "admin@vlabs.com"
+}
+</pre>
+<div class="org-src-container">
+
+<pre class="src src-python">@api.route('/edit_users/&lt;int:id&gt;', methods=['PUT'])
+def edit_user(id):
+    global system
+    if ((not 'session' in request.json) or (not 'name' in request.json and not 'email' in request.json and not 'role_id' in request.json)):
+        abort(400)
+    try:
+        user = User.get_by_id(id)
+        session_email = request.json['session'].encode('ascii','ignore')
+        session = system.get_session_from_email(session_email)
+        if request.json['name'] != None:
+            name = request.json['name'].encode('ascii','ignore')
+            user1 = system.update_name(session,user,name)
+        if request.json['role_id'] != None:
+            user1 = system.update_role(session,user1)    
+        if request.json['email'] != None:
+            email = request.json['email'].encode('ascii','ignore')
+            user1 = system.update_email(session,user1,email)
+        return jsonify(user1.to_client())
+    except Exception, e:
+        current_app.logger.error("Error occured while getting emails"
+                                     "user record: %s" % str(e))
+        print str(e)
+        abort(500, str(e))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline28" class="outline-2">
+<h2 id="orgheadline28"><span class="section-number-2">3</span> Test API</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25"><span class="section-number-3">3.1</span> Imports for tests</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-python"># -*- coding: utf-8 -*-
+
+import unittest
+from flask.ext.testing import TestCase
+from datetime import datetime
+# import json
+
+from src.db import *
+from src.app import create_app
+from src.op_exceptions import AttributeRequired
+from src.api import system
+config = {
+    'SQLALCHEMY_DATABASE_URI': ''
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><span class="section-number-3">3.2</span> User Tests</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
+
+<pre class="src src-python">class TestUser(TestCase):
+
+    TESTING = True
+
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    def setUp(self):
+        global system
+        db.create_all()
+        role_admin = Role('admin')
+        role_user = Role('user')
+        role_admin.save()
+        role_user.save()
+        na = Name('shashank')
+        em = Email('shashank@gmail.com')
+        na.save()
+        em.save()
+        us = User(na,em,Role.get_by_id(1))
+        us.save()
+        system = WebSystem()
+        system.login(system.get_user_from_email ('shashank@gmail.com'))
+        
+    def tearDown(self):
+        global system
+        system.logout(system.sessions[0])
+        db.session.remove()
+        db.drop_all()
+
+    def test_get_all_users(self):
+        print "test_get_all_users"
+
+        ###Create Users
+        payload = {'session': 'shashank@gmail.com'}
+
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/users",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all_roles(self):
+        print "test_get_all_roles"
+
+        ###Create Users
+        payload = {'session': 'shashank@gmail.com'}
+
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/roles",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_all_names(self):
+        print "test_get_all_names"
+
+        ###Create Users
+        payload = {'session': 'shashank@gmail.com'}
+
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/names",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_all_emails(self):
+        print "test_get_all_emails"
+
+        ###Create Users
+        payload = {'session': 'shashank@gmail.com'}
+
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/emails",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_one_user(self):
+        print "test_get_one_user"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/users/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_one_role(self):
+        print "test_get_one_role"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/roles/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_one_name(self):
+        print "test_get_one_name"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/names/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_one_email(self):
+        print "test_get_one_email"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.get("/emails/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_create_user(self):
+        print "test_create_user"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com','name':'messi','email':'messi@barca.com',
+                   'role_id':'2','session':'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.post("/create_user",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_user(self):
+        global system
+        print "test_delete_user"
+
+        ### create a User
+        sess = system.get_session_from_email('shashank@gmail.com')
+        system.create_user(sess,'messi','messi@barca.com',Role.get_by_id(2))
+        payload = {'session': 'shashank@gmail.com'}
+        headers = {'content-type': 'application/json'}
+
+        response = self.client.delete("/users/2",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_update_role(self):
+       print "test_update_role"
+
+       ### create a User
+       sess = system.get_session_from_email('shashank@gmail.com')
+       system.create_user(sess,'messi','messi@barca.com',Role.get_by_id(2))
+       payload = {'session': 'shashank@gmail.com'}
+       headers = {'content-type': 'application/json'}
+       response = self.client.put("/users_roles/2",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+       self.assertEqual(response.status_code, 200)
+        
+    def test_update_name(self):
+        print "test_update_name"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com','name':'shashankviswanadha'}
+        headers = {'content-type': 'application/json'}
+        response = self.client.put("/users_names/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_email(self):
+        print "test_update_email"
+
+        ### create a User
+        payload = {'session': 'shashank@gmail.com','email':'shashankviswanadha@gmail.com'}
+        headers = {'content-type': 'application/json'}
+        response = self.client.put("/users_emails/1",
+                                      data=json.dumps(payload),
+                                      headers=headers)                         
+        self.assertEqual(response.status_code, 200)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline27" class="outline-3">
+<h3 id="orgheadline27"><span class="section-number-3">3.3</span> Run Tests</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+
+<pre class="src src-python">if __name__ == '__main__':
+    unittest.main()
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2016-05-11 Wed]</span></span></p>
+<p class="author">Author: VLEAD</p>
+<p class="date">Created: 2016-06-03 Fri 09:28</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

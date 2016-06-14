@@ -1,0 +1,11 @@
+
+* operations
+|---------------------------+-------------------+--------------+--------+---------|
+| operations                | credentials       | Referentials | Effect | Remarks |
+| Signature                 |                   | Integrity    | and/or |         |
+|                           |                   |              | output |         |
+|---------------------------+-------------------+--------------+--------+---------|
+| addUser(u:User,s:Session) | s.user.role=admin | u:-use-set   |        |         |
+|                           |                   | s:Session    |        |         |
+|---------------------------+-------------------+--------------+--------+---------|
+| delUser(u:User,s:Session) |                   |              |        |         |

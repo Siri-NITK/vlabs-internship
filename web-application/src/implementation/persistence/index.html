@@ -1,0 +1,2280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-06-03 Fri 09:27 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Data Model of the User Directory Application</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="VLEAD" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Data Model of the User Directory Application</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline4">1. Initialization</a>
+<ul>
+<li><a href="#orgheadline1">1.1. Imports for Python API</a></li>
+<li><a href="#orgheadline2">1.2. Imports and Initialization of testcases for Python API</a></li>
+<li><a href="#orgheadline3">1.3. Imports for utility functions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline8">2. Utility Functions</a>
+<ul>
+<li>
+<ul>
+<li><a href="#orgheadline5">2.0.1. is_alphabetic_string(value)</a></li>
+<li><a href="#orgheadline6">2.0.2. is_email(value)</a></li>
+<li><a href="#orgheadline7">2.0.3. Other function for REST</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline124">3. Object Relational Model</a>
+<ul>
+<li><a href="#orgheadline12">3.1. Name</a>
+<ul>
+<li><a href="#orgheadline9">3.1.1. Table for name objects</a></li>
+<li><a href="#orgheadline10">3.1.2. Construction</a></li>
+<li><a href="#orgheadline11">3.1.3. Test the Construction</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline16">3.2. Email</a>
+<ul>
+<li><a href="#orgheadline13">3.2.1. Table for email objects</a></li>
+<li><a href="#orgheadline14">3.2.2. Construction</a></li>
+<li><a href="#orgheadline15">3.2.3. Test the Construction</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline50">3.3. User</a>
+<ul>
+<li><a href="#orgheadline17">3.3.1. Immutable Data</a></li>
+<li><a href="#orgheadline18">3.3.2. Mutable Data</a></li>
+<li><a href="#orgheadline19">3.3.3. Table for user objects</a></li>
+<li><a href="#orgheadline20">3.3.4. Definition</a></li>
+<li><a href="#orgheadline23">3.3.5. Constructor</a></li>
+<li><a href="#orgheadline49">3.3.6. Functions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline67">3.4. Role</a>
+<ul>
+<li><a href="#orgheadline51">3.4.1. Introduction</a></li>
+<li><a href="#orgheadline52">3.4.2. Immutable Data</a></li>
+<li><a href="#orgheadline53">3.4.3. Mutable Data</a></li>
+<li><a href="#orgheadline54">3.4.4. Table for user objects</a></li>
+<li><a href="#orgheadline55">3.4.5. Definition</a></li>
+<li><a href="#orgheadline56">3.4.6. Constructor</a></li>
+<li><a href="#orgheadline57">3.4.7. Test Constructor</a></li>
+<li><a href="#orgheadline66">3.4.8. Functions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline76">3.5. Session</a>
+<ul>
+<li><a href="#orgheadline68">3.5.1. Introduction</a></li>
+<li><a href="#orgheadline69">3.5.2. Mutable Data</a></li>
+<li><a href="#orgheadline70">3.5.3. Definition</a></li>
+<li><a href="#orgheadline71">3.5.4. Constructor</a></li>
+<li><a href="#orgheadline72">3.5.5. Test Constructor</a></li>
+<li><a href="#orgheadline75">3.5.6. Functions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline122">3.6. WebSystem</a>
+<ul>
+<li><a href="#orgheadline77">3.6.1. Introduction</a></li>
+<li><a href="#orgheadline78">3.6.2. Mutable Data</a></li>
+<li><a href="#orgheadline79">3.6.3. Definition</a></li>
+<li><a href="#orgheadline80">3.6.4. Constructor</a></li>
+<li><a href="#orgheadline81">3.6.5. Test Constructor</a></li>
+<li><a href="#orgheadline121">3.6.6. Functions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline123">3.7. setUp and tearDown</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline125">4. Run Test Cases</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">1</span> Initialization</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> Imports for Python API</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-python"># -*- coding: utf-8 -*-
+
+from collections import OrderedDict
+
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask import current_app, request
+from sqlalchemy.orm import relationship
+import sqlalchemy.types as types
+
+import os
+import re
+from urlparse import urlparse
+from datetime import datetime
+import json
+
+from op_exceptions import AttributeRequired
+from op_exceptions import NotAuthorizedError
+from op_exceptions import ConstraintError
+from utils import *
+
+
+db = SQLAlchemy()
+
+
+# Abstract class to hold common methods
+class Entity(db.Model):
+
+    __abstract__ = True
+
+    # save a db.Model to the database. commit it.
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    # update the object, and commit to the database
+    def update(self, **kwargs):
+        for attr, val in kwargs.iteritems():
+            setter_method = "set_" + attr
+            try:
+                self.__getattribute__(setter_method)(val)
+            except Exception as e:
+                raise e
+
+        self.save()
+
+    #print "Setting new val"
+    #print "Calling %s on %s" % (method_to_set, curr_entity)
+    #try:
+    #    getattr(record, method_to_set)(new_val)
+    #except Exception as e:
+    #pass
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Imports and Initialization of testcases for Python API</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-python"># -*- coding: utf-8 -*-
+
+import unittest
+from flask.ext.testing import TestCase
+from datetime import datetime
+# import json
+
+from src.db import *
+from src.app import create_app
+from src.op_exceptions import AttributeRequired
+from src.op_exceptions import NotAuthorizedError
+from src.op_exceptions import ConstraintError
+
+config = {
+    'SQLALCHEMY_DATABASE_URI': ''
+}
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Imports for utility functions</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-python"># module to hold all utilities/helper functions
+
+import json
+
+from flask import make_response, current_app
+
+import re
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8"><span class="section-number-2">2</span> Utility Functions</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">2.0.1</span> is_alphabetic_string(value)</h4>
+<div class="outline-text-4" id="text-2-0-1">
+<p>
+This function take an argument and checks whether the argument contains
+only alphabets.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">def is_alphabetic_string(value):
+    if re.search('[^a-zA-Z. ]+', value):
+        return False
+    else:
+        return True
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">2.0.2</span> is_email(value)</h4>
+<div class="outline-text-4" id="text-2-0-2">
+<p>
+Email is a type as defined in RFC <a href="https://tools.ietf.org/html/rfc5321">5321</a>, <a href="https://tools.ietf.org/html/rfc5322">5322</a> and <a href="https://tools.ietf.org/html/rfc6531">6531</a>.
+Following is the constructor for this class.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">def is_email(value):
+    if re.search('[^@]+@[^@]+\.[^@]+', value):
+        return True
+    else:
+        return False
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7"><span class="section-number-4">2.0.3</span> Other function for REST</h4>
+<div class="outline-text-4" id="text-2-0-3">
+<div class="org-src-container">
+
+<pre class="src src-python"># module to hold all utilities/helper functions
+
+# return a list of dicts as json with correct mime types
+# flask does not provide a jsonify for lists; hence this method
+def jsonify_list(data):
+    if type(data) is not list:
+        raise Exception('jsonify_list function accepts only a list')
+
+    return make_response(json.dumps(data), 200,
+                         {'content-type': 'application/json'})
+
+
+# take in a flask request object and try to parse out a dictionary from the
+# request
+# try to find if request is as JSON first, then look into forms, finally force
+# find it.
+# If not found return a dict; else return the parsed data
+def parse_request(request):
+    if request.json:
+        # print 'found in request.json'
+        data = request.get_json()
+
+    elif request.data:
+        # print 'found in request.data'
+        data = json.loads(request.data)
+
+    elif request.form:
+        # print 'found in request.form'
+        data = request.form.to_dict()
+        # try to detect if form contains integers and boolean data and attempt
+        # to convert them
+        # FIXME: is this a good idea? Fix this to do it in a better way?
+        for k in data:
+            if is_number(data[k]):
+                data[k] = int(data[k])
+            if is_bool_in_str(data[k]):
+                data[k] = str_to_bool(data[k])
+
+            # print k, data[k]
+
+    else:
+        data = request.get_json(force=True)
+
+    if not data:
+        return False
+
+    return data
+
+
+# check if a given string is a number
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+
+# check if in a given string python bool types are represented
+def is_bool_in_str(s):
+    if s == "True" or s == "False":
+        return True
+    return False
+
+
+# convert python bool types in string to native bool types
+def str_to_bool(s):
+    if s == "True":
+        return True
+    if s == "False":
+        return False
+    return None
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline124" class="outline-2">
+<h2 id="orgheadline124"><span class="section-number-2">3</span> Object Relational Model</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">3.1</span> Name</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">3.1.1</span> Table for name objects</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+Name of table:- 'Name'
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">id</th>
+<th scope="col" class="org-left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Column 'id' is of integer type and is the primary key of the table.</li>
+<li>Column 'value' is of type string,it need not be unique and this field 
+can never be empty.</li>
+<li>The user's table back refers to this table.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">3.1.2</span> Construction</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<div class="org-src-container">
+
+<pre class="src src-python">class Name(Entity):
+    __tablename__ = 'Name'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(128), unique=False, nullable=False)
+    users = db.relationship('User', backref='name')
+
+    def __init__(self, value):
+        # value: String 
+        # if the string contains any non-alphabet and non-space character,
+        # raise a type error
+        if is_alphabetic_string(value):
+            self.value = value
+        else:
+            raise TypeError('%s is not a Name!' % value)
+
+    def __str__(self):
+        return self.value
+        
+    def to_client(self):
+        return {'name':self.value}
+
+    @staticmethod
+    def get_by_id(id):
+        return Name.query.get(id)
+    @staticmethod
+    def get_all_names():
+        return Name.query.all()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">3.1.3</span> Test the Construction</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<div class="org-src-container">
+
+<pre class="src src-python">class TestName(TestCase):
+    TESTING = True
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    def test_name_type(self):
+        print "test_name_type"
+        system = setUp()
+        self.assertEqual(Name.query.get(1).value, "shashank")
+        # incorrect name
+        self.assertRaises(TypeError, Name, "123dasd")
+        tearDown(system)
+    
+    def test_name_get_by_id(self):
+        print "test_name_get_by_id"
+        system = setUp()
+        self.assertEquals(Name.get_by_id(1).value, "shashank")
+        tearDown(system)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">3.2</span> Email</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13"><span class="section-number-4">3.2.1</span> Table for email objects</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Name of table:- 'Email'
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">id</th>
+<th scope="col" class="org-left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Column 'id' is of integer type and is the primary key of the table.</li>
+<li>Column 'value' is of type string,it should be unique and this field 
+can never be empty.</li>
+<li>The user's table back refers to this table.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14"><span class="section-number-4">3.2.2</span> Construction</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+Email is a type as defined in RFC <a href="https://tools.ietf.org/html/rfc5321">5321</a>, <a href="https://tools.ietf.org/html/rfc5322">5322</a> and <a href="https://tools.ietf.org/html/rfc6531">6531</a>.
+Following is the constructor for this class.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-python">class Email(Entity):
+    __tablename__ = 'Email'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(128), unique=True, nullable=False)
+    users = db.relationship('User', uselist = False, backref='email')
+
+    def __init__(self, value):
+        if is_email(value):
+            self.value = value
+        else:
+            raise TypeError('%s is not a valid Email!' %value)
+            
+    def __str__(self):
+        return self.value
+        
+    def to_client(self):
+        return {'email' : self.value}
+
+    @staticmethod
+    def get_by_id(id):
+        return Email.query.get(id)
+
+    @staticmethod
+    def get_all_emails():
+        return Email.query.all()
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15"><span class="section-number-4">3.2.3</span> Test the Construction</h4>
+<div class="outline-text-4" id="text-3-2-3">
+<div class="org-src-container">
+
+<pre class="src src-python">class TestEmail(TestCase):
+    TESTING = True
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    def test_email_type(self):
+        print "test_email_type"
+        system = setUp()
+        
+        # correct email
+        self.assertEqual(Email.query.get(1).value, "shashank@gmail.com")
+        # incorrect email
+        #self.assertRaises(TypeError,Email,"John")
+        tearDown(system)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline50" class="outline-3">
+<h3 id="orgheadline50"><span class="section-number-3">3.3</span> User</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17"><span class="section-number-4">3.3.1</span> Immutable Data</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<p>
+This is the data associated with Institute type, which is immutable.
+</p>
+
+<ul class="org-ul">
+<li>Id</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">3.3.2</span> Mutable Data</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+These are the data associated with User type, which are mutable
+</p>
+
+<ul class="org-ul">
+<li>Name</li>
+<li>Email</li>
+<li>Role</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19"><span class="section-number-4">3.3.3</span> Table for user objects</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+Name of table:- 'User'
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">id</th>
+<th scope="col" class="org-left">role_id</th>
+<th scope="col" class="org-left">name_id</th>
+<th scope="col" class="org-left">email_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<ul class="org-ul">
+<li>Column 'id' is of integer type and is the primary key of the table.</li>
+<li>Column 'role_id' is of type integer</li>
+<li>Column 'name_id' is of type integer</li>
+<li>Column 'email_id' is of type integer</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">3.3.4</span> Definition</h4>
+<div class="outline-text-4" id="text-3-3-4">
+<div class="org-src-container">
+
+<pre class="src src-python">class User(Entity):
+
+    __tablename__ = 'User'
+
+    id = db.Column(db.Integer, primary_key=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('Role.id'))
+    name_id = db.Column(db.Integer, db.ForeignKey('Name.id'))
+    email_id = db.Column(db.Integer, db.ForeignKey('Email.id'))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23"><span class="section-number-4">3.3.5</span> Constructor</h4>
+<div class="outline-text-4" id="text-3-3-5">
+</div><ol class="org-ol"><li><a id="orgheadline21"></a>Implementation<br  /><div class="outline-text-5" id="text-3-3-5-1">
+<p>
+Signature of the constructor of <code>User</code> is as follows:
+</p>
+
+<pre class="example">
+usr = User(name=&lt;object of Name&gt;, email=&lt;object of Email&gt;, 
+          role=&lt;object of Role&gt;)
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def __init__(self,name,email,role):
+        
+            self.set_email(email)
+            self.set_name(name)
+            self.set_role(role)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline22"></a>Test the constructor<br  /><div class="outline-text-5" id="text-3-3-5-2">
+<div class="org-src-container">
+
+<pre class="src src-python">class TestUser(TestCase):
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    TESTING = True
+
+    def test_user_creation(self):
+        print "test_user_creation"
+        system = setUp()
+        # correct email
+        self.assertEqual(User.query.get(1).email.value, "shashank@gmail.com")
+        self.assertEqual(User.query.get(1).name.value, "shashank")
+        self.assertEqual(User.query.get(1).role.value, "admin")       
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol>
+</div>
+
+
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49"><span class="section-number-4">3.3.6</span> Functions</h4>
+<div class="outline-text-4" id="text-3-3-6">
+</div><ol class="org-ol"><li><a id="orgheadline26"></a>setEmail<br  /><ol class="org-ol"><li><a id="orgheadline24"></a>Implementaion<br  /><div class="outline-text-6" id="text-3-3-6-1-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def set_email(self, email):
+        if isinstance(email,Email):
+            self.email = email
+            
+        else:
+            raise TypeError('Invalid object type for email')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline25"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-1-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_set_email(self):
+        print "test_set_email"
+        system = setUp()
+        us = User.get_by_id(1)
+        em = Email('shashankviswanadha@gmail.com')
+        us.set_email(em)
+        us.save()
+        em.save()
+        self.assertEqual(Email.get_by_id(2).value,'shashankviswanadha@gmail.com')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline29"></a>setName<br  /><ol class="org-ol"><li><a id="orgheadline27"></a>Implementation<br  /><div class="outline-text-6" id="text-3-3-6-2-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def set_name(self, name):
+        if isinstance(name,Name):
+            self.name = name
+            
+        else:
+            raise TypeError('Invalid object type for name')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline28"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-2-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_set_name(self):
+        print "test_set_name"
+        system = setUp()
+        us = User.get_by_id(1)
+        na = Name('shashankviswanadha')
+        us.set_name(na)
+        us.save()
+        na.save()
+        self.assertEqual(Name.get_by_id(2).value,'shashankviswanadha')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+<li><a id="orgheadline32"></a>setRole<br  /><ol class="org-ol"><li><a id="orgheadline30"></a>Implementation<br  /><div class="outline-text-6" id="text-3-3-6-3-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def set_role(self, role):
+        if isinstance(role,Role):
+            self.role = role
+        else:
+            raise TypeError('Invalid object type for role')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline31"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-3-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_set_role(self):
+        print "test_set_name"
+        system = setUp()
+        us = User.get_by_id(1)
+        us.set_role(Role.get_by_id(2))
+        us.save()
+        self.assertEqual(User.get_by_id(1).role.value,'user')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+<li><a id="orgheadline35"></a>getRole<br  /><ol class="org-ol"><li><a id="orgheadline33"></a>Implementation<br  /><div class="outline-text-6" id="text-3-3-6-4-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_role(self):
+        return self.role
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline34"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-4-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_role(self):
+        print "test_get_role"
+        system = setUp()
+        us = User.get_by_id(1)
+        self.assertEqual(us.get_role().value,'admin')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline38"></a>getEmail<br  /><ol class="org-ol"><li><a id="orgheadline36"></a>Implemetation<br  /><div class="outline-text-6" id="text-3-3-6-5-1">
+<div class="org-src-container">
+
+<pre class="src src-python">   def get_email(self):
+       return self.email
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline37"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-5-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_email(self):
+        print "test_get_email"
+        system = setUp()
+        us = User.get_by_id(1)
+        self.assertEqual(us.get_email().value,'shashank@gmail.com')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline41"></a>getName<br  /><ol class="org-ol"><li><a id="orgheadline39"></a>Implemetation<br  /><div class="outline-text-6" id="text-3-3-6-6-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_name(self):
+        return self.name
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline40"></a>Test<br  /><div class="outline-text-6" id="text-3-3-6-6-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_name(self):
+        print "test_get_name"
+        system = setUp()
+        us = User.get_by_id(1)
+        self.assertEqual(us.get_name().value,'shashank')
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline42"></a>toClient<br  /><div class="outline-text-5" id="text-3-3-6-7">
+<div class="org-src-container">
+
+<pre class="src src-python">    def to_client(self):
+        return {
+            'name': self.name.value,
+            'email': self.email.value,
+            'role': self.role.value
+        }
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline44"></a>getById : id &#x2013;&gt; User<br  /><ol class="org-ol"><li><a id="orgheadline43"></a>Implementation<br  /><div class="outline-text-6" id="text-3-3-6-8-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    @staticmethod
+    def get_by_id(id):
+        return User.query.get(id)
+</pre>
+</div>
+</div></li></ol></li>
+
+
+
+<li><a id="orgheadline45"></a>toClient<br  /><div class="outline-text-5" id="text-3-3-6-9">
+<div class="org-src-container">
+
+<pre class="src src-python">    def to_client(self):
+        return {
+            'id': self.id,
+            'name': self.name.value,
+            'email': self.email.value,
+            'role': self.role.value
+        }
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline48"></a>getAll: Nil &#x2013;&gt; set[User]<br  /><ol class="org-ol"><li><a id="orgheadline46"></a>Implementation<br  /><div class="outline-text-6" id="text-3-3-6-10-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    @staticmethod
+    def get_all():
+        return User.query.all()
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline47"></a>Test getAll<br  /><div class="outline-text-6" id="text-3-3-6-10-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_user_get_all(self):
+        print "test_user_get_all"
+        system = setUp()
+        users = User.get_all()
+        boo = users[0].name.value == 'shashank'
+        self.assertTrue(boo)
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li></ol>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orgheadline67" class="outline-3">
+<h3 id="orgheadline67"><span class="section-number-3">3.4</span> Role</h3>
+<div class="outline-text-3" id="text-3-4">
+</div><div id="outline-container-orgheadline51" class="outline-4">
+<h4 id="orgheadline51"><span class="section-number-4">3.4.1</span> Introduction</h4>
+<div class="outline-text-4" id="text-3-4-1">
+<p>
+A Role has got certain privileges.  In this current application, the
+privileges are understood 
+</p>
+
+<p>
+Different types of roles are:
+</p>
+<dl class="org-dl">
+<dt>Owner </dt><dd>An owner is user an admin who cannot delete himself</dd>
+<dt>Admin</dt><dd>An admin is an user who can add, modify and delete other users
+except owner</dd>
+<dt>User</dt><dd>A User is a user who can view all other users and either modify or
+delete himself.</dd>
+<dt>Guest</dt><dd>A Guest is a user who can view all other users</dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline52" class="outline-4">
+<h4 id="orgheadline52"><span class="section-number-4">3.4.2</span> Immutable Data</h4>
+<div class="outline-text-4" id="text-3-4-2">
+<p>
+This is the data associated with Institute type, which is immutable.
+</p>
+
+<ul class="org-ul">
+<li>Id</li>
+<li>roles[] :- Is a list containing 2 strings 'admin' and 'user'</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline53" class="outline-4">
+<h4 id="orgheadline53"><span class="section-number-4">3.4.3</span> Mutable Data</h4>
+<div class="outline-text-4" id="text-3-4-3">
+<p>
+These are the data associated with User type, which are mutable
+</p>
+
+<ul class="org-ul">
+<li>value</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline54" class="outline-4">
+<h4 id="orgheadline54"><span class="section-number-4">3.4.4</span> Table for user objects</h4>
+<div class="outline-text-4" id="text-3-4-4">
+<p>
+Name of table:- 'User'
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">id</th>
+<th scope="col" class="org-left">value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+
+<ul class="org-ul">
+<li>Column 'id' is of integer type and is the primary key of the table.</li>
+<li>Column 'value' is of type string</li>
+<li>The table user back refers to this table to populate its field role_id.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline55" class="outline-4">
+<h4 id="orgheadline55"><span class="section-number-4">3.4.5</span> Definition</h4>
+<div class="outline-text-4" id="text-3-4-5">
+<div class="org-src-container">
+
+<pre class="src src-python">class Role(Entity):
+    __tablename__ = 'Role'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.String(128), unique=False, nullable=False)
+    users = db.relationship('User', backref='role')
+    roles = ['admin','user']
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline56" class="outline-4">
+<h4 id="orgheadline56"><span class="section-number-4">3.4.6</span> Constructor</h4>
+<div class="outline-text-4" id="text-3-4-6">
+<p>
+The signature of Role is defined as follows
+</p>
+<pre class="example">
+role = Role(name=&lt;Object of Name&gt;)
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def __init__(self, value):
+        self.set_role(value)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57"><span class="section-number-4">3.4.7</span> Test Constructor</h4>
+<div class="outline-text-4" id="text-3-4-7">
+<div class="org-src-container">
+
+<pre class="src src-python">class TestRole(TestCase):
+    TESTING = True
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    def test_role_creation(self):
+        print "test_role_construtor"
+        system = setUp()
+        # correct name
+        self.assertEqual(Role.get_by_id(1).value, "admin")
+        self.assertEqual(Role.get_by_id(2).value, "user")
+        # incorrect name
+        #self.assertRaises(TypeError, Name, "123dasd")
+        tearDown(system)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><span class="section-number-4">3.4.8</span> Functions</h4>
+<div class="outline-text-4" id="text-3-4-8">
+</div><ol class="org-ol"><li><a id="orgheadline60"></a>setRole<br  /><ol class="org-ol"><li><a id="orgheadline59"></a>Implementation<br  /><div class="outline-text-6" id="text-3-4-8-1-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def set_role(self, name):
+        if name not in Role.roles:
+            raise TypeError("Invalid role type")
+        else:
+            self.value = name
+</pre>
+</div>
+</div>
+
+<ol class="org-ol"><li><a id="orgheadline58"></a>Test_set_role<br  /><div class="outline-text-7" id="text-3-4-8-1-1-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_role_set_name(self):
+        print "test_role_set_name"
+</pre>
+</div>
+</div></li></ol></li></ol></li>
+
+
+<li><a id="orgheadline63"></a>getAllRoles<br  /><ol class="org-ol"><li><a id="orgheadline61"></a>Implementation<br  /><div class="outline-text-6" id="text-3-4-8-2-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    @staticmethod
+    def get_all_roles():
+        return Role.query.all()
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline62"></a>Test getAll: Nil &#x2013;&gt; set[Role]<br  /><div class="outline-text-6" id="text-3-4-8-2-2">
+<div class="org-src-container">
+
+<pre class="src src-python">   def test_role_get_all(self):
+       print "test_role_get_all" 
+       system = setUp()
+       boo = Role.get_all_roles() == [Role.get_by_id(1),Role.get_by_id(2)]
+       self.assertTrue(boo)
+       tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+
+<li><a id="orgheadline64"></a>to_client<br  /><div class="outline-text-5" id="text-3-4-8-3">
+<div class="org-src-container">
+
+<pre class="src src-python">    def to_client(self):
+        return {'role' :self.value}
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline65"></a>get_by_id<br  /><div class="outline-text-5" id="text-3-4-8-4">
+<div class="org-src-container">
+
+<pre class="src src-python">    @staticmethod
+    def get_by_id(id):
+        return Role.query.get(id)
+</pre>
+</div>
+</div></li></ol>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline76" class="outline-3">
+<h3 id="orgheadline76"><span class="section-number-3">3.5</span> Session</h3>
+<div class="outline-text-3" id="text-3-5">
+</div><div id="outline-container-orgheadline68" class="outline-4">
+<h4 id="orgheadline68"><span class="section-number-4">3.5.1</span> Introduction</h4>
+<div class="outline-text-4" id="text-3-5-1">
+<p>
+A session is the class that performs all the operations on the system.
+</p>
+
+<dl class="org-dl">
+<dt>User</dt><dd>A User object is associated with each session object.</dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69"><span class="section-number-4">3.5.2</span> Mutable Data</h4>
+<div class="outline-text-4" id="text-3-5-2">
+<p>
+The data associated with Session type, which are mutable
+</p>
+<ul class="org-ul">
+<li>usr :- A user object</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline70" class="outline-4">
+<h4 id="orgheadline70"><span class="section-number-4">3.5.3</span> Definition</h4>
+<div class="outline-text-4" id="text-3-5-3">
+<div class="org-src-container">
+
+<pre class="src src-python">class Session():
+    
+    usr = None
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline71" class="outline-4">
+<h4 id="orgheadline71"><span class="section-number-4">3.5.4</span> Constructor</h4>
+<div class="outline-text-4" id="text-3-5-4">
+<p>
+The signature of Session is defined as follows
+</p>
+<pre class="example">
+session = Session(user)
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def __init__(self,user):
+        self.usr = user
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline72" class="outline-4">
+<h4 id="orgheadline72"><span class="section-number-4">3.5.5</span> Test Constructor</h4>
+<div class="outline-text-4" id="text-3-5-5">
+<div class="org-src-container">
+
+<pre class="src src-python"></pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline75" class="outline-4">
+<h4 id="orgheadline75"><span class="section-number-4">3.5.6</span> Functions</h4>
+<div class="outline-text-4" id="text-3-5-6">
+</div><ol class="org-ol"><li><a id="orgheadline73"></a>get_user<br  /><div class="outline-text-5" id="text-3-5-6-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user(self):
+        return self.usr
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline74"></a>set_user<br  /><div class="outline-text-5" id="text-3-5-6-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def set_user(self,user):
+        if isinstance(user,User) or user == None:
+            self.usr = user
+        else:
+            raise TypeError('Invalid User type')
+</pre>
+</div>
+</div></li></ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline122" class="outline-3">
+<h3 id="orgheadline122"><span class="section-number-3">3.6</span> WebSystem</h3>
+<div class="outline-text-3" id="text-3-6">
+</div><div id="outline-container-orgheadline77" class="outline-4">
+<h4 id="orgheadline77"><span class="section-number-4">3.6.1</span> Introduction</h4>
+<div class="outline-text-4" id="text-3-6-1">
+<p>
+A WebSystem is the class that performs all the operations on the system.
+</p>
+
+<dl class="org-dl">
+<dt>User</dt><dd>A User object is associated with each session object.</dd>
+</dl>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline78" class="outline-4">
+<h4 id="orgheadline78"><span class="section-number-4">3.6.2</span> Mutable Data</h4>
+<div class="outline-text-4" id="text-3-6-2">
+<p>
+These are the data associated with WebSystem type, which are mutable
+</p>
+<ul class="org-ul">
+<li>users[] :- List of registered users.</li>
+<li>sessions[] :-List of sessions of the logged in users.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline79" class="outline-4">
+<h4 id="orgheadline79"><span class="section-number-4">3.6.3</span> Definition</h4>
+<div class="outline-text-4" id="text-3-6-3">
+<div class="org-src-container">
+
+<pre class="src src-python">class WebSystem():
+    
+    users = []
+    sessions = []
+    system_active = False
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline80" class="outline-4">
+<h4 id="orgheadline80"><span class="section-number-4">3.6.4</span> Constructor</h4>
+<div class="outline-text-4" id="text-3-6-4">
+<p>
+The signature of WebSystem is defined as follows
+</p>
+<pre class="example">
+role = Role(user)
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def __init__(self):
+        if WebSystem.system_active == False:
+            WebSystem.system_active = True
+	    #self.users = User.get_all()
+        else:
+            self.users = User.get_all()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline81" class="outline-4">
+<h4 id="orgheadline81"><span class="section-number-4">3.6.5</span> Test Constructor</h4>
+<div class="outline-text-4" id="text-3-6-5">
+<div class="org-src-container">
+
+<pre class="src src-python">class WebSystem_test(TestCase):
+    TESTING = True
+    def create_app(self):
+        app = create_app(config)
+        return app
+
+    def test_WebSystem_cretion(self):
+        print 'WebSystem creation test'
+        system = setUp()
+        self.assertEqual(system.users[0].email.value,'shashank@gmail.com')
+        system = tearDown(system)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline121" class="outline-4">
+<h4 id="orgheadline121"><span class="section-number-4">3.6.6</span> Functions</h4>
+<div class="outline-text-4" id="text-3-6-6">
+</div><ol class="org-ol"><li><a id="orgheadline82"></a>admin_check<br  /><div class="outline-text-5" id="text-3-6-6-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def admin_check(self,user):
+        for us in self.users:
+            if us.email.value != user.email.value:
+                if us.role == Role.get_by_id(1):
+                    return True
+        return False
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline83"></a>login<br  /><div class="outline-text-5" id="text-3-6-6-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def login(self,user):
+        if isinstance(user,User) and user in self.users:
+            flag = 0
+            for sess in self.sessions:
+                if sess.get_user().email.value == user.email.value:
+                    flag = 1
+                    break
+            if flag == 0:
+                sess = Session (user)
+                self.sessions.append(sess)
+                return sess 
+            else:
+                raise ConstraintError("User already in session")
+        else:
+            raise TypeError('Invalid user')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline84"></a>test_login<br  /><div class="outline-text-5" id="text-3-6-6-3">
+<p>
+Tests :
+</p>
+<ul class="org-ul">
+<li>Raises constraint error when already a logged user tries to login.</li>
+<li>Raises Type error for an invalid user login</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_login(self):
+        print 'login test'
+        system = setUp()
+        us = system.get_user_from_email('shashank@gmail.com')
+        sess = system.login(us)
+        self.assertEquals(system.sessions,[sess])
+        self.assertRaises(ConstraintError,system.login ,system.get_user_from_email('shashank@gmail.com'))
+        user = User(Name('sjhdsjsh'),Email('dhfdjh@djhdj.com'),Role.get_by_id(2))
+        self.assertRaises(TypeError,system.login,user)
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline85"></a>logout<br  /><div class="outline-text-5" id="text-3-6-6-4">
+<div class="org-src-container">
+
+<pre class="src src-python">    def logout(self,session):
+        if isinstance(session,Session):
+            session.set_user(None)
+            self.sessions.remove(session)
+        else:
+            raise TypeError('Invalid Session type')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline86"></a>test_logout<br  /><div class="outline-text-5" id="text-3-6-6-5">
+<p>
+Tests :
+</p>
+<ul class="org-ul">
+<li>The lengths of the session set should decrease by 1 after a logout.</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_logout(self):
+        print 'logout test'
+        system = setUp()
+        us = system.get_user_from_email('shashank@gmail.com')
+        sess = system.login(us)
+        before = len(system.sessions)
+        system.logout(sess)
+        after = len(system.sessions)
+        boo = after == before
+        self.assertFalse(boo)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline87"></a>create_user<br  /><div class="outline-text-5" id="text-3-6-6-6">
+<div class="org-src-container">
+
+<pre class="src src-python">    def create_user(self,session,name,email,role):
+        if session.usr.role.value == 'admin':
+            for user in self.users:
+                if user.email.value == email:
+                    raise ConstraintError('User alredy exists!')
+	    na = Name(name)
+	    em = Email(email)
+  	    na.save()
+	    em.save()
+            newUser = User(na,em,role)
+	    newUser.save()
+	    self.users = User.get_all()
+            return True
+        else:
+            raise NotAuthorizedError('Only an admin can create a new user')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline88"></a>test_create_user<br  /><div class="outline-text-5" id="text-3-6-6-7">
+<p>
+Tests :
+</p>
+<ul class="org-ul">
+<li>A NotAuthorisedError is raised when a user tries to add another user.</li>
+<li>A ConstraintError is raised while creating a user with an already
+existing email.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_create_user(self):
+        print 'create user test'
+        system = setUp()
+        us = system.get_user_from_email('shashank@gmail.com')
+        sess = system.login(us)
+        system.create_user(sess,'srivalya','srivalya@gmail.com',Role.get_by_id(2))
+        boo = len(system.users) == 2
+        self.assertTrue(boo)
+        sess1 = system.login(system.get_user_from_email('srivalya@gmail.com'))
+        self.assertRaises(NotAuthorizedError,system.create_user,sess1,'mike','mike@hsbs.com',Role.get_by_id(1))
+        self.assertRaises(ConstraintError,system.create_user,sess,'mike','srivalya@gmail.com',Role.get_by_id(1))
+        system.logout(sess)
+        system.logout(sess1)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline89"></a>delete_user<br  /><div class="outline-text-5" id="text-3-6-6-8">
+<div class="org-src-container">
+
+<pre class="src src-python">    def delete_user(self,session,user):
+        if session.usr.role.value == 'admin':
+            if isinstance (user,User) and user in self.users:
+                for sess in self.sessions:
+                    if sess.usr.email.value == user.email.value:
+                        raise NotAuthorizedError('user in session') 
+		na = user.name
+		em = user.email            
+                user.delete()
+		em.delete()
+		del_name = Name.query.filter_by (value = na)
+		if del_name == []:
+		    del_name.delete()
+		self.users = User.get_all()
+                return True
+            else:
+                raise TypeError('Invalid user')
+        else:
+            raise NotAuthorizedError('You do not have he permission to delete users' )
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline90"></a>test_delete_user<br  /><div class="outline-text-5" id="text-3-6-6-9">
+<p>
+Tests:
+</p>
+<ul class="org-ul">
+<li>NotAuthorizedError is raised when a user tries to delete and when an
+admin tries to delete a user in session.</li>
+</ul>
+
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_delete_user(self):
+        print 'delete user test'
+        system = setUp()
+        us = system.get_user_from_email('shashank@gmail.com')
+        sess = system.login(us) 
+        system.create_user(sess,'srivalya','srivalya@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'messi','messi@gmail.com',Role.get_by_id(1))
+        system.create_user(sess,'neymar','ney@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        sess1 = system.login(system.get_user_from_email('srivalya@gmail.com'))
+        system.delete_user(sess,system.get_user_from_email('ney@gmail.com'))
+        boo = len(system.users) == 4
+        self.assertTrue(boo)
+        self.assertRaises(NotAuthorizedError,system.delete_user,sess,system.get_user_from_email('srivalya@gmail.com'))
+        self.assertRaises(NotAuthorizedError,system.delete_user,sess1,system.get_user_from_email('barca@barca.com'))
+        system.delete_user(sess,system.get_user_from_email('messi@gmail.com'))
+        self.assertTrue(len(system.users) == 3)
+        system.logout(sess)
+        system.logout(sess1)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline91"></a>update_role<br  /><div class="outline-text-5" id="text-3-6-6-10">
+<ul class="org-ul">
+<li>Only an admin can update the roles.</li>
+<li>The admin can update his own role provided another admin exists.</li>
+<li>TypeError raised for an invalid user.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python">    def update_role(self,session,user):
+        if session.usr.role.value == 'admin':
+            if isinstance (user,User) and user in self.users:
+                if user.role.value == 'user':
+                    user.set_role(Role.get_by_id(1))
+                    user.save()
+                    self.users = User.get_all()
+                    return user
+                elif user.role.value == 'admin': 
+                    if user.email.value == session.usr.email.value and self.admin_check(user) == True:
+                        user.set_role(Role.get_by_id(2))
+                        user.save()
+                        self.users = User.get_all()
+                        return user
+                    else:
+                        raise NotAuthorizedError('Operation not authorized')
+                
+            else:
+                raise TypeError('Invalid User type')
+        else:
+            raise  NotAuthorizedError('Operation not authorized')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline92"></a>test_update_role<br  /><div class="outline-text-5" id="text-3-6-6-11">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_update_role(self):
+        print 'test update role'
+        system = setUp()
+        us = system.get_user_from_email('shashank@gmail.com')
+        sess = system.login(us)
+        system.create_user(sess,'srivalya','srivalya@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        sess1 = system.login(system.get_user_from_email('srivalya@gmail.com'))
+        system.update_role(sess,system.get_user_from_email('srivalya@gmail.com'))
+        self.assertTrue(system.get_user_from_email('srivalya@gmail.com').role == Role.get_by_id(1))
+        sess2 = system.login(system.get_user_from_email('barca@barca.com'))
+        self.assertRaises(NotAuthorizedError,system.update_role,sess,system.get_user_from_email('srivalya@gmail.com'))
+        self.assertRaises(NotAuthorizedError,system.update_role,sess2,system.get_user_from_email('barca@barca.com'))
+        system.update_role(sess1,system.get_user_from_email('srivalya@gmail.com'))
+        self.assertTrue(system.get_user_from_email('srivalya@gmail.com').role == Role.get_by_id(2))
+        system.logout(sess)
+        system.logout(sess1)
+        system.logout(sess2)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline93"></a>update name<br  /><div class="outline-text-5" id="text-3-6-6-12">
+<div class="org-src-container">
+
+<pre class="src src-python">    def update_name(self,session,user,name):
+        if session.usr.role.value == 'admin' :
+            if isinstance (user,User) and user in self.users :
+                old_name = user.name
+                na = Name(name)
+                na.save()
+                user.set_name(na)
+                user.save()
+                if old_name.users == []:
+                    old_name.delete()
+                self.users = User.get_all()
+                return user
+            else:
+                raise TypeError('Invalid Email Type')
+        elif session.usr.role.value == 'user' :
+            if isinstance (user,User) and user in self.users and user.name.value == session.usr.name.value:
+                old_name = user.name
+                na = Name(name)
+                na.save()
+                user.set_name(na)
+                if old_name.users == []:
+                   old_name.delete()
+                self.users = User.get_all()
+                return user
+            else:
+                raise NotAuthorizedError('Only an admin can change the names of other users')
+        else:
+            raise TypeError('Invalid role type')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline94"></a>test_update_name<br  /><div class="outline-text-5" id="text-3-6-6-13">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_update_name(self):
+        print 'update name test'
+        system = setUp()
+        sess = system.login(system.get_user_from_email('shashank@gmail.com'))
+        system.create_user(sess,'srivalya','srivalya@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        system.create_user(sess,'srivalya','sri@mail.com',Role.get_by_id(2))
+        system.update_name(sess,system.get_user_from_email('srivalya@gmail.com'),'sri')
+        self.assertTrue(system.get_user_from_email('srivalya@gmail.com').name.value == 'sri')
+        sess1 = system.login(system.get_user_from_email('barca@barca.com'))
+        self.assertRaises(NotAuthorizedError,system.update_name,sess1,system.get_user_from_email('shashank@gmail.com'),'SV')
+        system.update_name(sess1,system.get_user_from_email('barca@barca.com'),'barcelona')
+        self.assertTrue(system.get_user_from_email('barca@barca.com').name.value == 'barcelona')
+        system.logout(sess)
+        system.logout(sess1)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline95"></a>update_email<br  /><div class="outline-text-5" id="text-3-6-6-14">
+<div class="org-src-container">
+
+<pre class="src src-python">    def update_email(self,session,user,email):
+            if session.usr.role.value == 'admin' :
+                if isinstance (user,User) and user in self.users :
+                    em = Email(email)
+                    em.save()
+                    old_email = user.email
+                    user.set_email(em)
+                    user.save()
+                    old_email.delete()
+                    self.users = User.get_all()
+                    return user
+                else:
+                    raise TypeError('Invalid User type')          
+            elif session.usr.role == 'user' :
+                if isinstance (user,User) and user in self.users and user.email.value == session.usr.email.value:
+                    em = Email(email)
+                    em.save()
+                    old_email = user.email
+                    user.set_email(em)
+                    user.save()
+                    old_email.delete()
+                    self.users = User.get_all()
+                    return user
+                else:
+                    raise NotAuthorizedError('Only an admin can change the names of other users')
+            else:
+                raise TypeError('Invalid role type')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline96"></a>test_update_email<br  /><div class="outline-text-5" id="text-3-6-6-15">
+<p>
+Tests:
+</p>
+<ul class="org-ul">
+<li>NotAuthorisedError is raised when and user tries to update an email of
+another user or an admin.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_update_email(self):
+        print 'test update email'
+        system = setUp()
+        sess = system.login(system.get_user_from_email('shashank@gmail.com'))
+        system.create_user(sess,'srivalya','srivalya@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        system.update_email(sess,system.get_user_from_email('srivalya@gmail.com'),'srivalya12@gmail.com')
+        self.assertTrue(system.get_user_from_email('srivalya12@gmail.com').email.value == 'srivalya12@gmail.com')
+        sess1 = system.login(system.get_user_from_email('barca@barca.com'))
+        self.assertRaises(NotAuthorizedError,system.update_email,sess1,system.get_user_from_email('shashank@gmail.com'),'shashankviswanadha@gmail.com')
+        system.update_email(sess1,system.get_user_from_email('barca@barca.com'),'barcelona@barca.com')
+        self.assertTrue(system.get_user_from_email('barcelona@barca.com').email.value == 'barcelona@barca.com')
+        system.logout(sess)
+        system.logout(sess1)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline97"></a>search_users<br  /><div class="outline-text-5" id="text-3-6-6-16">
+<div class="org-src-container">
+
+<pre class="src src-python">    def search_users(self,session,**kwargs):
+        if session in self.sessions:
+            search = []
+            for key,value in kwargs.iteritems():
+                if key == 'name':
+                    c = 0
+                    for user in self.users:
+                        if user.name.value == value:
+                            search.append(user)
+                            c = 1
+                    if c == 0:
+                        raise ConstraintError('Name not found')
+                
+                if key == 'email':
+                    c = 0
+                    for user in self.users:
+                        if user.email.value == value:
+                            search.append(user)
+                            c = 1
+                            break
+                    if c == 0:
+                        raise ConstraintError('Email not found')
+                
+                if key == 'role':
+                    c = 0
+                    for user in self.users:
+                        if user.role.value == value:
+                            search.append(user)
+                            c = 1
+                    if c == 0:
+                        raise ConstraintError('role not found')
+            if search == []:
+                return False
+            return search
+        raise ConstraintError('Session not found')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline98"></a>test_search_users<br  /><div class="outline-text-5" id="text-3-6-6-17">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_search_users(self):
+        print 'test search users'
+        system = setUp()
+        sess = system.login(system.get_user_from_email('shashank@gmail.com'))
+        system.create_user(sess,'messi','messi@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        system.create_user(sess,'messi','lm@gmail.com',Role.get_by_id(1))
+        sch1 = system.search_users(sess,name = 'messi')
+        self.assertTrue(sch1 == [system.users[1],system.users[3]])
+        sch2 = system.search_users(sess,email = 'shashank@gmail.com')
+        self.assertTrue(sch2 == [system.users[0]])
+        sch3 = system.search_users(sess,role = 'user')
+        self.assertTrue(sch3 == [system.users[1],system.users[2]])
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline99"></a>get_users<br  /><div class="outline-text-5" id="text-3-6-6-18">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_users(self,session):
+        if isinstance(session,Session) and session in self.sessions:
+            self.users = User.get_all()
+            return self.users
+        else:
+            raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline100"></a>test_get_users<br  /><div class="outline-text-5" id="text-3-6-6-19">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_users(self):
+        print 'test_get_ users'
+        system = setUp()
+        sess = system.login(system.get_user_from_email('shashank@gmail.com'))
+        system.create_user(sess,'messi','messi@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        self.assertTrue(len(system.get_users(sess)) == 3)
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline101"></a>get_roles<br  /><div class="outline-text-5" id="text-3-6-6-20">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_roles(self,session):
+        if isinstance(session,Session) and session in self.sessions:
+            return Role.get_all_roles()
+        else:
+            raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline102"></a>get_names<br  /><div class="outline-text-5" id="text-3-6-6-21">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_names(self,session):
+        if isinstance(session,Session) and session in self.sessions:
+            return Name.get_all_names()
+        else:
+            raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline103"></a>get_emails<br  /><div class="outline-text-5" id="text-3-6-6-22">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_emails(self,session):
+        if isinstance(session,Session) and session in self.sessions:
+            return Email.get_all_emails()
+        else:
+            raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline104"></a>get_sessions<br  /><div class="outline-text-5" id="text-3-6-6-23">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_sessions(self):
+        return self.sessions
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline105"></a>test_get_sessions<br  /><div class="outline-text-5" id="text-3-6-6-24">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_sessions(self):
+        print 'test get sessions'
+        system = setUp()
+        sess = system.login(system.get_user_from_email('shashank@gmail.com'))
+        system.create_user(sess,'messi','messi@gmail.com',Role.get_by_id(2))
+        system.create_user(sess,'barca','barca@barca.com',Role.get_by_id(2))
+        sess1 = system.login(system.get_user_from_email('messi@gmail.com'))
+        sess2 = system.login(system.get_user_from_email('barca@barca.com'))
+        self.assertTrue(len(system.get_sessions()) == 3) 
+        system.logout(sess)
+        system.logout(sess1)
+        system.logout(sess2)
+        tearDown(system)
+</pre>
+</div>
+</div></li>
+
+
+<li><a id="orgheadline106"></a>get_user_from_email<br  /><div class="outline-text-5" id="text-3-6-6-25">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user_from_email(self,email):
+        self.users = User.get_all()
+        for user in self.users:
+            if user.get_email().value == email:
+                return user
+        return False
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline107"></a>get_session_from_user<br  /><div class="outline-text-5" id="text-3-6-6-26">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_session_from_user(self,user):
+        if isinstance(user,User):
+            for sess in self.sessions:
+                if sess.usr.email.value == user.email.value:
+                    return sess
+            raise ConstraintError("User not in session")
+        else:
+            raise TypeError('Not a valid user')
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline108"></a>get_session_from_email<br  /><div class="outline-text-5" id="text-3-6-6-27">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_session_from_email(self,email):
+        self.users = User.get_all()
+        us = self.get_user_from_email(email)
+        if us != False:
+            return self.get_session_from_user(us)
+        raise ConstraintError("User not in system")
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline111"></a>get_name<br  /><ol class="org-ol"><li><a id="orgheadline109"></a>Implementation<br  /><div class="outline-text-6" id="text-3-6-6-28-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user_name(self,session,user):
+        if session in self.sessions:
+            if isinstance(user,User):
+                return user.get_name()
+            else:
+                raise TypeError('Invalid user')
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline110"></a>Test<br  /><div class="outline-text-6" id="text-3-6-6-28-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_user_name(self):
+        print "test_get_user_name"
+        system = setUp()
+        us = User.get_by_id(1)
+        sess = system.login(us)
+        self.assertEquals(system.get_user_name(sess,us).value, 'shashank')
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline114"></a>get_email<br  /><ol class="org-ol"><li><a id="orgheadline112"></a>Implementation<br  /><div class="outline-text-6" id="text-3-6-6-29-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user_email(self,session,user):
+        if session in self.sessions:
+            if isinstance(user,User):
+                return user.get_email()
+            else:
+                raise TypeError('Invalid user')
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline113"></a>Test<br  /><div class="outline-text-6" id="text-3-6-6-29-2">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_user_email(self):
+        print "test_get_user_email"
+        system = setUp()
+        us = User.get_by_id(1)
+        sess = system.login(us)
+        self.assertEquals(system.get_user_email(sess,us).value, 'shashank@gmail.com')
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+<li><a id="orgheadline116"></a>get_role<br  /><div class="outline-text-5" id="text-3-6-6-30">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user_role(self,session,user):
+        if session in self.sessions:
+            if isinstance(user,User):
+                return user.get_role()
+            else:
+                raise TypeError('Invalid user')
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div>
+<ol class="org-ol"><li><a id="orgheadline115"></a>Test<br  /><div class="outline-text-6" id="text-3-6-6-30-1">
+<div class="org-src-container">
+
+<pre class="src src-python">    def test_get_user_role(self):
+        print "test_get_user_role"
+        system = setUp()
+        us = User.get_by_id(1)
+        sess = system.login(us)
+        self.assertEquals(system.get_user_role(sess,us), Role.get_by_id(1))
+        system.logout(sess)
+        tearDown(system)
+</pre>
+</div>
+</div></li></ol></li>
+
+
+<li><a id="orgheadline117"></a>get_name_by_id<br  /><div class="outline-text-5" id="text-3-6-6-31">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_name_by_id(self,session,ide):
+        if session in self.sessions:
+            return Name.get_by_id(ide)
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline118"></a>get_email_by_id<br  /><div class="outline-text-5" id="text-3-6-6-32">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_email_by_id(self,session,ide):
+        if session in self.sessions:
+            return Email.get_by_id(ide)
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline119"></a>get_role_by_id<br  /><div class="outline-text-5" id="text-3-6-6-33">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_role_by_id(self,session,ide):
+        if session in self.sessions:
+            return Role.get_by_id(ide)
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li>
+<li><a id="orgheadline120"></a>get_user_by_id<br  /><div class="outline-text-5" id="text-3-6-6-34">
+<div class="org-src-container">
+
+<pre class="src src-python">    def get_user_by_id(self,session,ide):
+        if session in self.sessions:
+            return User.get_by_id(ide)
+        raise TypeError('Invalid session')
+</pre>
+</div>
+</div></li></ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline123" class="outline-3">
+<h3 id="orgheadline123"><span class="section-number-3">3.7</span> setUp and tearDown</h3>
+<div class="outline-text-3" id="text-3-7">
+<div class="org-src-container">
+
+<pre class="src src-python">def setUp():
+    db.create_all()
+    role_admin = Role('admin')
+    role_user = Role('user')
+    role_admin.save()
+    role_user.save()
+    na = Name('shashank')
+    em = Email('shashank@gmail.com')
+    na.save()
+    em.save()
+    us = User(na,em,Role.get_by_id(1))
+    us.save()
+    system = WebSystem()
+    system.users = User.get_all()
+    return system
+
+def tearDown(system):
+    db.session.remove()
+    db.drop_all()
+    system.users = []
+    system.sessions = []
+    WebSystem.system_active = False
+    return system
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orgheadline125" class="outline-2">
+<h2 id="orgheadline125"><span class="section-number-2">4</span> Run Test Cases</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+
+<pre class="src src-python">if __name__ == '__main__':
+    unittest.main()
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Date: <span class="timestamp-wrapper"><span class="timestamp">[2016-05-11 Wed]</span></span></p>
+<p class="author">Author: VLEAD</p>
+<p class="date">Created: 2016-06-03 Fri 09:27</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
