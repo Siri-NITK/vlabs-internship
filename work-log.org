@@ -101,7 +101,20 @@
    + Task assigned today? Still working on the specification language as he asked me to modify the previous one I had sent.
 ** [2016-06-09 Thu]
    + Task assigned today? Still modifying the specification language.
-** [2016-06-9 Fri]
+** [2016-06-10 Fri]
    + Task assigned today? Couldn't communicate with my mentor as he was busy with some other work today. I didnt have much to do today.
-   
+** [2106-06-13 Mon]
+   + Was Absent
+** [2016-06-14 Tue]
+   + Task assigned today? Was asked to look up jeeves software.
+** [2016-06-15 Wed]
+   + Task assigned today? Finished the specification language.
+** [2016-06-16 Thu]
+   + Task assigned today? Wrote BNF grammar for the specification language 
+** [2016-06-17 Fri]
+   + Task assigned today? Started working on writing the lexical analyzer for the language designed.
+** [2016-06-18 Sat]
+   + Task assigned today? Still working on the lexical analyser.
+** [2016-06-21 Tue]
+   + Task assigned today? Finished the lexical analyser and started learning how to build an abstract syntax tree for syntax analyser.
 * Month of July
